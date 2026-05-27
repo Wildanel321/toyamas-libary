@@ -14,16 +14,149 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      books: {
+        Row: {
+          added_by: string | null
+          author: string | null
+          category: string | null
+          cover_url: string | null
+          created_at: string
+          description: string | null
+          drive_file_id: string
+          id: string
+          page_count: number | null
+          size_bytes: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          added_by?: string | null
+          author?: string | null
+          category?: string | null
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          drive_file_id: string
+          id?: string
+          page_count?: number | null
+          size_bytes?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          added_by?: string | null
+          author?: string | null
+          category?: string | null
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          drive_file_id?: string
+          id?: string
+          page_count?: number | null
+          size_bytes?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      loans: {
+        Row: {
+          book_id: string
+          borrowed_at: string
+          due_at: string
+          id: string
+          returned_at: string | null
+          user_id: string
+        }
+        Insert: {
+          book_id: string
+          borrowed_at?: string
+          due_at?: string
+          id?: string
+          returned_at?: string | null
+          user_id: string
+        }
+        Update: {
+          book_id?: string
+          borrowed_at?: string
+          due_at?: string
+          id?: string
+          returned_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loans_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "member"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +283,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "member"],
+    },
   },
 } as const

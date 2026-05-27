@@ -9,38 +9,201 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as MyLoansRouteImport } from './routes/my-loans'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as BrowseRouteImport } from './routes/browse'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ReadIdRouteImport } from './routes/read.$id'
+import { Route as BookIdRouteImport } from './routes/book.$id'
+import { Route as ApiPublicPdfIdRouteImport } from './routes/api/public/pdf.$id'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyLoansRoute = MyLoansRouteImport.update({
+  id: '/my-loans',
+  path: '/my-loans',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BrowseRoute = BrowseRouteImport.update({
+  id: '/browse',
+  path: '/browse',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReadIdRoute = ReadIdRouteImport.update({
+  id: '/read/$id',
+  path: '/read/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookIdRoute = BookIdRouteImport.update({
+  id: '/book/$id',
+  path: '/book/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicPdfIdRoute = ApiPublicPdfIdRouteImport.update({
+  id: '/api/public/pdf/$id',
+  path: '/api/public/pdf/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/browse': typeof BrowseRoute
+  '/login': typeof LoginRoute
+  '/my-loans': typeof MyLoansRoute
+  '/register': typeof RegisterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/book/$id': typeof BookIdRoute
+  '/read/$id': typeof ReadIdRoute
+  '/api/public/pdf/$id': typeof ApiPublicPdfIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/browse': typeof BrowseRoute
+  '/login': typeof LoginRoute
+  '/my-loans': typeof MyLoansRoute
+  '/register': typeof RegisterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/book/$id': typeof BookIdRoute
+  '/read/$id': typeof ReadIdRoute
+  '/api/public/pdf/$id': typeof ApiPublicPdfIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/browse': typeof BrowseRoute
+  '/login': typeof LoginRoute
+  '/my-loans': typeof MyLoansRoute
+  '/register': typeof RegisterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/book/$id': typeof BookIdRoute
+  '/read/$id': typeof ReadIdRoute
+  '/api/public/pdf/$id': typeof ApiPublicPdfIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/browse'
+    | '/login'
+    | '/my-loans'
+    | '/register'
+    | '/sitemap.xml'
+    | '/book/$id'
+    | '/read/$id'
+    | '/api/public/pdf/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/browse'
+    | '/login'
+    | '/my-loans'
+    | '/register'
+    | '/sitemap.xml'
+    | '/book/$id'
+    | '/read/$id'
+    | '/api/public/pdf/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/browse'
+    | '/login'
+    | '/my-loans'
+    | '/register'
+    | '/sitemap.xml'
+    | '/book/$id'
+    | '/read/$id'
+    | '/api/public/pdf/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  BrowseRoute: typeof BrowseRoute
+  LoginRoute: typeof LoginRoute
+  MyLoansRoute: typeof MyLoansRoute
+  RegisterRoute: typeof RegisterRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  BookIdRoute: typeof BookIdRoute
+  ReadIdRoute: typeof ReadIdRoute
+  ApiPublicPdfIdRoute: typeof ApiPublicPdfIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-loans': {
+      id: '/my-loans'
+      path: '/my-loans'
+      fullPath: '/my-loans'
+      preLoaderRoute: typeof MyLoansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/browse': {
+      id: '/browse'
+      path: '/browse'
+      fullPath: '/browse'
+      preLoaderRoute: typeof BrowseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +211,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/read/$id': {
+      id: '/read/$id'
+      path: '/read/$id'
+      fullPath: '/read/$id'
+      preLoaderRoute: typeof ReadIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book/$id': {
+      id: '/book/$id'
+      path: '/book/$id'
+      fullPath: '/book/$id'
+      preLoaderRoute: typeof BookIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/pdf/$id': {
+      id: '/api/public/pdf/$id'
+      path: '/api/public/pdf/$id'
+      fullPath: '/api/public/pdf/$id'
+      preLoaderRoute: typeof ApiPublicPdfIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  BrowseRoute: BrowseRoute,
+  LoginRoute: LoginRoute,
+  MyLoansRoute: MyLoansRoute,
+  RegisterRoute: RegisterRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  BookIdRoute: BookIdRoute,
+  ReadIdRoute: ReadIdRoute,
+  ApiPublicPdfIdRoute: ApiPublicPdfIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
