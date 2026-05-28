@@ -7,9 +7,8 @@ import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
-import { adminStats, listBooks, syncDriveBooks, deleteBook, updateBook } from "@/lib/books.functions";
+import { adminStats, listBooks, deleteBook, updateBook } from "@/lib/books.functions";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Admin — Toyamas Library" }] }),
@@ -27,7 +26,6 @@ function Admin() {
 
   const fetchStats = useServerFn(adminStats);
   const fetchBooks = useServerFn(listBooks);
-  const doSync = useServerFn(syncDriveBooks);
   const doDelete = useServerFn(deleteBook);
   const doUpdate = useServerFn(updateBook);
 
@@ -35,18 +33,7 @@ function Admin() {
   const { data: stats } = useQuery({ queryKey: ["admin-stats"], queryFn: () => fetchStats(), enabled });
   const { data: booksData, refetch } = useQuery({ queryKey: ["admin-books"], queryFn: () => fetchBooks({ data: {} }), enabled });
 
-  const [folderId, setFolderId] = useState("");
-  const [syncing, setSyncing] = useState(false);
 
-  async function handleSync() {
-    setSyncing(true);
-    try {
-      const res = await doSync({ data: { folderId: folderId || undefined } });
-      toast.success(`Sinkronisasi selesai: ${res.added} dari ${res.scanned} buku`);
-      refetch();
-    } catch (e) { toast.error((e as Error).message); }
-    finally { setSyncing(false); }
-  }
 
   if (!enabled) return <div className="min-h-screen"><Header /></div>;
 
