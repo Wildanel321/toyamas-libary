@@ -24,6 +24,9 @@ export interface DriveFile {
 
 export async function listPdfsInFolder(folderId?: string): Promise<DriveFile[]> {
   const baseQuery = "mimeType='application/pdf' and trashed=false";
+  if (folderId && !/^[a-zA-Z0-9_-]{10,80}$/.test(folderId)) {
+    throw new Error("Invalid Google Drive folder ID format");
+  }
   const q = folderId ? `${baseQuery} and '${folderId}' in parents` : baseQuery;
   const url = new URL(`${GATEWAY}/files`);
   url.searchParams.set("q", q);
