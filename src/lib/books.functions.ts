@@ -109,7 +109,12 @@ async function assertAdmin(userId: string) {
 export const syncDriveBooks = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { folderId?: string } | undefined) =>
-    z.object({ folderId: z.string().min(1).max(200).optional() }).parse(input ?? {}),
+    z.object({
+      folderId: z
+        .string()
+        .regex(/^[a-zA-Z0-9_-]{10,80}$/, "Invalid Google Drive folder ID format")
+        .optional(),
+    }).parse(input ?? {}),
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context.userId);
