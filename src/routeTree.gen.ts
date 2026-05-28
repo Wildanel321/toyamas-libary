@@ -18,6 +18,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReadIdRouteImport } from './routes/read.$id'
 import { Route as BookIdRouteImport } from './routes/book.$id'
+import { Route as AdminSyncRouteImport } from './routes/admin.sync'
 import { Route as ApiPublicPdfIdRouteImport } from './routes/api/public/pdf.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -65,6 +66,11 @@ const BookIdRoute = BookIdRouteImport.update({
   path: '/book/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSyncRoute = AdminSyncRouteImport.update({
+  id: '/sync',
+  path: '/sync',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ApiPublicPdfIdRoute = ApiPublicPdfIdRouteImport.update({
   id: '/api/public/pdf/$id',
   path: '/api/public/pdf/$id',
@@ -73,24 +79,26 @@ const ApiPublicPdfIdRoute = ApiPublicPdfIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/browse': typeof BrowseRoute
   '/login': typeof LoginRoute
   '/my-loans': typeof MyLoansRoute
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin/sync': typeof AdminSyncRoute
   '/book/$id': typeof BookIdRoute
   '/read/$id': typeof ReadIdRoute
   '/api/public/pdf/$id': typeof ApiPublicPdfIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/browse': typeof BrowseRoute
   '/login': typeof LoginRoute
   '/my-loans': typeof MyLoansRoute
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin/sync': typeof AdminSyncRoute
   '/book/$id': typeof BookIdRoute
   '/read/$id': typeof ReadIdRoute
   '/api/public/pdf/$id': typeof ApiPublicPdfIdRoute
@@ -98,12 +106,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/browse': typeof BrowseRoute
   '/login': typeof LoginRoute
   '/my-loans': typeof MyLoansRoute
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin/sync': typeof AdminSyncRoute
   '/book/$id': typeof BookIdRoute
   '/read/$id': typeof ReadIdRoute
   '/api/public/pdf/$id': typeof ApiPublicPdfIdRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/my-loans'
     | '/register'
     | '/sitemap.xml'
+    | '/admin/sync'
     | '/book/$id'
     | '/read/$id'
     | '/api/public/pdf/$id'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/my-loans'
     | '/register'
     | '/sitemap.xml'
+    | '/admin/sync'
     | '/book/$id'
     | '/read/$id'
     | '/api/public/pdf/$id'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/my-loans'
     | '/register'
     | '/sitemap.xml'
+    | '/admin/sync'
     | '/book/$id'
     | '/read/$id'
     | '/api/public/pdf/$id'
@@ -149,7 +161,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   BrowseRoute: typeof BrowseRoute
   LoginRoute: typeof LoginRoute
   MyLoansRoute: typeof MyLoansRoute
@@ -225,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/sync': {
+      id: '/admin/sync'
+      path: '/sync'
+      fullPath: '/admin/sync'
+      preLoaderRoute: typeof AdminSyncRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/api/public/pdf/$id': {
       id: '/api/public/pdf/$id'
       path: '/api/public/pdf/$id'
@@ -235,9 +254,19 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminSyncRoute: typeof AdminSyncRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminSyncRoute: AdminSyncRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   BrowseRoute: BrowseRoute,
   LoginRoute: LoginRoute,
   MyLoansRoute: MyLoansRoute,
@@ -250,13 +279,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

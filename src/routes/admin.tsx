@@ -7,9 +7,8 @@ import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
-import { adminStats, listBooks, syncDriveBooks, deleteBook, updateBook } from "@/lib/books.functions";
+import { adminStats, listBooks, deleteBook, updateBook } from "@/lib/books.functions";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Admin — Toyamas Library" }] }),
@@ -27,7 +26,6 @@ function Admin() {
 
   const fetchStats = useServerFn(adminStats);
   const fetchBooks = useServerFn(listBooks);
-  const doSync = useServerFn(syncDriveBooks);
   const doDelete = useServerFn(deleteBook);
   const doUpdate = useServerFn(updateBook);
 
@@ -35,18 +33,7 @@ function Admin() {
   const { data: stats } = useQuery({ queryKey: ["admin-stats"], queryFn: () => fetchStats(), enabled });
   const { data: booksData, refetch } = useQuery({ queryKey: ["admin-books"], queryFn: () => fetchBooks({ data: {} }), enabled });
 
-  const [folderId, setFolderId] = useState("");
-  const [syncing, setSyncing] = useState(false);
 
-  async function handleSync() {
-    setSyncing(true);
-    try {
-      const res = await doSync({ data: { folderId: folderId || undefined } });
-      toast.success(`Sinkronisasi selesai: ${res.added} dari ${res.scanned} buku`);
-      refetch();
-    } catch (e) { toast.error((e as Error).message); }
-    finally { setSyncing(false); }
-  }
 
   if (!enabled) return <div className="min-h-screen"><Header /></div>;
 
@@ -74,15 +61,13 @@ function Admin() {
         </div>
 
         <section className="mt-10 rounded-lg border border-border/60 bg-card p-6 shadow-soft">
-          <h2 className="font-display text-2xl">Sinkronkan dari Google Drive</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Pindai folder Drive Anda dan tambahkan semua PDF ke katalog. Kosongkan untuk memindai seluruh Drive.</p>
-          <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-            <div className="flex-1">
-              <Label htmlFor="folder" className="sr-only">Folder ID</Label>
-              <Input id="folder" value={folderId} onChange={(e) => setFolderId(e.target.value)} placeholder="ID folder Drive (opsional)" />
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="font-display text-2xl">Sinkronkan dari Google Drive</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Buka halaman sinkronisasi untuk memantau progres dan melihat laporan buku yang baru masuk.</p>
             </div>
-            <Button onClick={handleSync} disabled={syncing} className="bg-spine text-primary-foreground hover:opacity-90">
-              <RefreshCw className={`h-4 w-4 ${syncing ? "animate-spin" : ""}`} /> {syncing ? "Memindai..." : "Sinkronkan"}
+            <Button asChild className="bg-spine text-primary-foreground hover:opacity-90">
+              <a href="/admin/sync"><RefreshCw className="h-4 w-4" /> Buka Halaman Sinkronisasi</a>
             </Button>
           </div>
         </section>
