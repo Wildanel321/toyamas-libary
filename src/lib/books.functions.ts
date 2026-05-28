@@ -114,9 +114,23 @@ export const syncDriveBooks = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context.userId);
     const files = await listPdfsInFolder(data.folderId);
+
+    // Get existing drive_file_ids to detect new vs updated
+    const ids = files.map((f) => f.id);
+    const { data: existingRows } = await supabaseAdmin
+      .from("books")
+      .select("drive_file_id")
+      .in("drive_file_id", ids.length ? ids : ["__none__"]);
+    const existing = new Set((existingRows ?? []).map((r) => r.drive_file_id));
+
+    const report: Array<{ id: string; title: string; status: "new" | "updated" | "failed"; error?: string; size?: number | null }> = [];
     let added = 0;
+    let updated = 0;
+    let failed = 0;
+
     for (const f of files) {
       const title = f.name.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim();
+      const isNew = !existing.has(f.id);
       const { error } = await supabaseAdmin.from("books").upsert(
         {
           drive_file_id: f.id,
@@ -128,9 +142,18 @@ export const syncDriveBooks = createServerFn({ method: "POST" })
         },
         { onConflict: "drive_file_id", ignoreDuplicates: false },
       );
-      if (!error) added++;
+      if (error) {
+        failed++;
+        report.push({ id: f.id, title, status: "failed", error: error.message });
+      } else if (isNew) {
+        added++;
+        report.push({ id: f.id, title, status: "new", size: f.size ? Number(f.size) : null });
+      } else {
+        updated++;
+        report.push({ id: f.id, title, status: "updated", size: f.size ? Number(f.size) : null });
+      }
     }
-    return { ok: true, scanned: files.length, added };
+    return { ok: true, scanned: files.length, added, updated, failed, report };
   });
 
 export const updateBook = createServerFn({ method: "POST" })
