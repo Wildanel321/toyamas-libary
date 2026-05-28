@@ -74,15 +74,13 @@ function Admin() {
         </div>
 
         <section className="mt-10 rounded-lg border border-border/60 bg-card p-6 shadow-soft">
-          <h2 className="font-display text-2xl">Sinkronkan dari Google Drive</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Pindai folder Drive Anda dan tambahkan semua PDF ke katalog. Kosongkan untuk memindai seluruh Drive.</p>
-          <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-            <div className="flex-1">
-              <Label htmlFor="folder" className="sr-only">Folder ID</Label>
-              <Input id="folder" value={folderId} onChange={(e) => setFolderId(e.target.value)} placeholder="ID folder Drive (opsional)" />
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="font-display text-2xl">Sinkronkan dari Google Drive</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Buka halaman sinkronisasi untuk memantau progres dan melihat laporan buku yang baru masuk.</p>
             </div>
-            <Button onClick={handleSync} disabled={syncing} className="bg-spine text-primary-foreground hover:opacity-90">
-              <RefreshCw className={`h-4 w-4 ${syncing ? "animate-spin" : ""}`} /> {syncing ? "Memindai..." : "Sinkronkan"}
+            <Button asChild className="bg-spine text-primary-foreground hover:opacity-90">
+              <a href="/admin/sync"><RefreshCw className="h-4 w-4" /> Buka Halaman Sinkronisasi</a>
             </Button>
           </div>
         </section>
