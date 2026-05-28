@@ -204,9 +204,9 @@ function SyncPage() {
                           )}
                         </div>
                       </div>
-                      {r.status !== "failed" && (
+                      {r.status === "new" && (
                         <Button asChild variant="ghost" size="sm">
-                          <Link to="/book/$id" params={{ id: r.id }}>Buka</Link>
+                          <Link to="/browse">Lihat di katalog</Link>
                         </Button>
                       )}
                     </li>
