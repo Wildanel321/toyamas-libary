@@ -10,6 +10,15 @@ import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/read/$id")({
+  head: ({ params }) => ({
+    meta: [
+      { title: "Membaca Buku — Toyamas Library" },
+      { name: "robots", content: "noindex, follow" },
+    ],
+    links: [
+      { rel: "canonical", href: `/book/${params.id}` },
+    ],
+  }),
   component: Reader,
 });
 
