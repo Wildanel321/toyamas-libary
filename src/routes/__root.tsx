@@ -50,12 +50,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "theme-color", content: "#c9a84c" },
       { name: "twitter:title", content: "Toyamas Library — Perpustakaan Digital untuk Semua" },
       { name: "twitter:description", content: "Toyamas Library adalah perpustakaan digital gratis. Baca ribuan buku PDF langsung di browser, pinjam buku, dan kembangkan literasi Anda." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3a5184f4-56c4-41ff-9d48-b0bca7c9370f/id-preview-f024ea54--4480fd2f-0430-4c66-908f-6453cb65cb17.lovable.app-1779886642673.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3a5184f4-56c4-41ff-9d48-b0bca7c9370f/id-preview-f024ea54--4480fd2f-0430-4c66-908f-6453cb65cb17.lovable.app-1779886642673.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "canonical", href: "/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" },
