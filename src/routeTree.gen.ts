@@ -20,6 +20,7 @@ import { Route as ReadIdRouteImport } from './routes/read.$id'
 import { Route as BookIdRouteImport } from './routes/book.$id'
 import { Route as AdminSyncRouteImport } from './routes/admin.sync'
 import { Route as ApiPublicPdfIdRouteImport } from './routes/api/public/pdf.$id'
+import { Route as ApiPublicHooksSyncDriveRouteImport } from './routes/api/public/hooks/sync-drive'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -76,6 +77,11 @@ const ApiPublicPdfIdRoute = ApiPublicPdfIdRouteImport.update({
   path: '/api/public/pdf/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicHooksSyncDriveRoute = ApiPublicHooksSyncDriveRouteImport.update({
+  id: '/api/public/hooks/sync-drive',
+  path: '/api/public/hooks/sync-drive',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/admin/sync': typeof AdminSyncRoute
   '/book/$id': typeof BookIdRoute
   '/read/$id': typeof ReadIdRoute
+  '/api/public/hooks/sync-drive': typeof ApiPublicHooksSyncDriveRoute
   '/api/public/pdf/$id': typeof ApiPublicPdfIdRoute
 }
 export interface FileRoutesByTo {
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/admin/sync': typeof AdminSyncRoute
   '/book/$id': typeof BookIdRoute
   '/read/$id': typeof ReadIdRoute
+  '/api/public/hooks/sync-drive': typeof ApiPublicHooksSyncDriveRoute
   '/api/public/pdf/$id': typeof ApiPublicPdfIdRoute
 }
 export interface FileRoutesById {
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/admin/sync': typeof AdminSyncRoute
   '/book/$id': typeof BookIdRoute
   '/read/$id': typeof ReadIdRoute
+  '/api/public/hooks/sync-drive': typeof ApiPublicHooksSyncDriveRoute
   '/api/public/pdf/$id': typeof ApiPublicPdfIdRoute
 }
 export interface FileRouteTypes {
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
     | '/admin/sync'
     | '/book/$id'
     | '/read/$id'
+    | '/api/public/hooks/sync-drive'
     | '/api/public/pdf/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
     | '/admin/sync'
     | '/book/$id'
     | '/read/$id'
+    | '/api/public/hooks/sync-drive'
     | '/api/public/pdf/$id'
   id:
     | '__root__'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/admin/sync'
     | '/book/$id'
     | '/read/$id'
+    | '/api/public/hooks/sync-drive'
     | '/api/public/pdf/$id'
   fileRoutesById: FileRoutesById
 }
@@ -169,6 +181,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BookIdRoute: typeof BookIdRoute
   ReadIdRoute: typeof ReadIdRoute
+  ApiPublicHooksSyncDriveRoute: typeof ApiPublicHooksSyncDriveRoute
   ApiPublicPdfIdRoute: typeof ApiPublicPdfIdRoute
 }
 
@@ -251,6 +264,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPdfIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/sync-drive': {
+      id: '/api/public/hooks/sync-drive'
+      path: '/api/public/hooks/sync-drive'
+      fullPath: '/api/public/hooks/sync-drive'
+      preLoaderRoute: typeof ApiPublicHooksSyncDriveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -274,6 +294,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   BookIdRoute: BookIdRoute,
   ReadIdRoute: ReadIdRoute,
+  ApiPublicHooksSyncDriveRoute: ApiPublicHooksSyncDriveRoute,
   ApiPublicPdfIdRoute: ApiPublicPdfIdRoute,
 }
 export const routeTree = rootRouteImport
