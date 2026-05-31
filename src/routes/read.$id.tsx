@@ -2,9 +2,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Download, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { Header } from "@/components/Header";
-import { Button } from "@/components/ui/button";
 import { getBook } from "@/lib/books.functions";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -57,19 +56,37 @@ function Reader() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="border-b border-border/60 bg-card/50">
+
+      {/* Reader Toolbar */}
+      <div
+        className="glass border-b"
+        style={{ borderBottom: "1px solid oklch(0.28 0.025 255 / 0.3)" }}
+      >
         <div className="container mx-auto flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-          <Link to="/book/$id" params={{ id }} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-4 w-4" /> {book?.title ?? "Kembali"}
+          <Link
+            to="/book/$id"
+            params={{ id }}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
+          >
+            <span
+              className="grid h-7 w-7 place-items-center rounded-lg group-hover:bg-white/10 transition-all"
+              style={{ border: "1px solid oklch(0.28 0.025 255 / 0.4)" }}
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+            </span>
+            {book?.title ?? "Kembali"}
           </Link>
-          {pdfUrl && (
-            <Button asChild variant="outline" size="sm">
-              <a href={pdfUrl} download><Download className="h-4 w-4" /> Unduh</a>
-            </Button>
+
+          {book && (
+            <div className="hidden md:flex items-center gap-2">
+              <span className="badge-pill badge-primary">{book.category ?? "Buku"}</span>
+            </div>
           )}
         </div>
       </div>
-      <main className="flex-1 bg-muted">
+
+      {/* PDF Viewer */}
+      <main className="flex-1" style={{ background: "oklch(0.08 0.012 260)" }}>
         {pdfUrl ? (
           <iframe
             src={pdfUrl}
@@ -78,9 +95,10 @@ function Reader() {
           />
         ) : (
           <div className="grid h-[calc(100vh-8rem)] place-items-center text-muted-foreground">
-            <span className="inline-flex items-center gap-2 text-sm">
-              <Loader2 className="h-4 w-4 animate-spin" /> Memuat pembaca...
-            </span>
+            <div className="text-center">
+              <Loader2 className="mx-auto h-8 w-8 animate-spin mb-3 text-primary" />
+              <span className="text-sm">Memuat pembaca...</span>
+            </div>
           </div>
         )}
       </main>
